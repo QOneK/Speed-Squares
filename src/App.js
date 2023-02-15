@@ -61,60 +61,100 @@ const buttonStyle = {
   fontSize: "16px",
 };
 
-function Square() {
-  return <div className="square" style={squareStyle}></div>;
-}
+let random;
+function Square(){
+  //squareStyle : white ; squareStyleActive : green
+  //random function
+  random = Math.floor(Math.random() * 2);
 
+  if (random > 0.5) {
+    return <div className="square" style={squareStyle}></div>;
+  } else if (random < 0.5) {
+    return <div className="square" style={squareStyleActive}></div>;
+  }
+
+}
 
 function Board() {
   const [time, setTimer] = useState(10); //time for the counter (start: 10 ; end : 0)
   const [press, setPress] = useState(false); //state for the "start" button
-  const notInitialRender = useRef(false)
-    
+  const [points, setPoints] = useState(0);
+  const [gameover, setGameover] = useState("");
+
   useEffect(() => {
-    if (notInitialRender.current){
-
-    } else {
-      notInitialRender.currnet = true
-    }
-    
-    
     const interval = setInterval(() => {
-      if (time > 0) {
+      if (time > 0 && press === true) {
         setTimer((time) => time - 1);
+      } else if (time === 0 && press === true) {
+        setTimer(10);
+        setPress(false);
+        setGameover("Game Over");
       }
-    }, 1000);
+    }, 100);
     return () => clearInterval(interval);
-  }, [press, time]);
+  });
 
-  function buttonPress () {
-    setPress(true)
+  function buttonPress() {
+    setPress(true);
+    setGameover("");
+    setPoints(0);
   }
-  
+
+  function Button({id}) {
+    <button id = {id}>
+
+    </button>
+  }
+
+  function boxPress(){
+    console.log(id)
+  }
+
   return (
     <div style={containerStyle} className="gameBoard">
       <div id="statusArea" className="status" style={instructionsStyle}>
-        Points: <span>0</span>
+        Points: <span>{points}</span>
       </div>
       <div id="winnerArea" className="winner" style={instructionsStyle}>
         Time left: <span>{time}</span>
       </div>
-      <button style={buttonStyle} onClick = {() => buttonPress()}>Start Game</button>
+      <h1>{gameover}</h1>
+      <button style={buttonStyle} onClick={() => buttonPress()}>
+        Start Game
+      </button>
       <div style={boardStyle}>
         <div className="board-row" style={rowStyle}>
-          <Square />
-          <Square />
-          <Square />
+          <Button id={1} onClick={() => boxPress()}>
+            <Square />
+          </Button>
+          <Button id={2} onClick={() => boxPress()}>
+            <Square />
+          </Button>
+          <Button id={3} onClick={() => boxPress()}>
+            <Square />
+          </Button>
         </div>
         <div className="board-row" style={rowStyle}>
-          <Square />
-          <Square />
-          <Square />
+          <Button id={4} onClick={() => boxPress()}>
+            <Square />
+          </Button>
+          <Button id={5} onClick={() => boxPress()}>
+            <Square />
+          </Button>
+          <Button id={6} onClick={() => boxPress()}>
+            <Square />
+          </Button>
         </div>
         <div className="board-row" style={rowStyle}>
-          <Square />
-          <Square />
-          <Square />
+          <Button id={7} onClick={() => boxPress()}>
+            <Square />
+          </Button>
+          <Button id={8} onClick={() => boxPress()}>
+            <Square />
+          </Button>
+          <Button id={9} onClick={() => boxPress()}>
+            <Square />
+          </Button>
         </div>
       </div>
     </div>
