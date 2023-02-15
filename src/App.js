@@ -61,38 +61,81 @@ const buttonStyle = {
   fontSize: "16px",
 };
 
-let random;
-function Square(){
-  //squareStyle : white ; squareStyleActive : green
-  //random function
-  random = Math.floor(Math.random() * 2);
-
-  if (random > 0.5) {
-    return <div className="square" style={squareStyle}></div>;
-  } else if (random < 0.5) {
-    return <div className="square" style={squareStyleActive}></div>;
-  }
-
-}
-
 function Board() {
   const [time, setTimer] = useState(10); //time for the counter (start: 10 ; end : 0)
   const [press, setPress] = useState(false); //state for the "start" button
-  const [points, setPoints] = useState(0);
-  const [gameover, setGameover] = useState("");
+  const [points, setPoints] = useState(0); //state for points
+  const [gameover, setGameover] = useState(""); //state for gameover text
+
+  const [status, setStatus] = useState({
+    a: 0,
+    b: 0,
+    c: 0,
+    d: 0,
+    e: 0,
+    f: 0,
+    g: 0,
+    h: 0,
+    i: 0,
+  }); //state for boxes
+
+  function Square({ status, id }) {
+    //squareStyle : white ; squareStyleActive : green
+    if (status === 0) {
+      return (
+        <button
+          id={id}
+          status={status}
+          style={squareStyle}
+          onClick={() => boxPress({ status, id })}
+        >
+          <div className="square"></div>
+        </button>
+      );
+    } else if (status === 1) {
+      return (
+        <button
+          id={id}
+          status={status}
+          style={squareStyleActive}
+          onClick={() => boxPress({ status, id })}
+        >
+          <div className="square"></div>
+        </button>
+      );
+    }
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (time > 0 && press === true) {
         setTimer((time) => time - 1);
-      } else if (time === 0 && press === true) {
+        let num;
+        num = [];
+        for (let i = 0; i < 9; i++) {
+          let random = Math.floor(Math.random() * 2);
+          num.push(random);
+        }
+        setStatus({
+          a: num[0],
+          b: num[1],
+          c: num[2],
+          d: num[3],
+          e: num[4],
+          f: num[5],
+          g: num[6],
+          h: num[7],
+          i: num[8],
+        });
+      } else if (time === 0) {
         setTimer(10);
         setPress(false);
         setGameover("Game Over");
+        setStatus({ a: 0, b: 0, c: 0, d: 0, e: 0, f: 0, g: 0, h: 0, i: 0 });
       }
-    }, 100);
+    }, 1000);
     return () => clearInterval(interval);
-  });
+  },[time,press]);
 
   function buttonPress() {
     setPress(true);
@@ -100,14 +143,31 @@ function Board() {
     setPoints(0);
   }
 
-  function Button({id}) {
-    <button id = {id}>
+  function boxPress(event) {
+    console.log(event)
+    if (event.status === 1){
+      if (event.id === 0){
+        setStatus({...status, a : 0})
+      } else if (event.id === 1){
+        setStatus({...status, b : 0})
+      } else if (event.id === 2){
+        setStatus({...status, c : 0})
+      } else if (event.id === 3){
+        setStatus({...status, d : 0})
+      } else if (event.id === 4){
+        setStatus({...status, e : 0})
+      } else if (event.id === 5){
+        setStatus({...status, f : 0})
+      } else if (event.id === 6){
+        setStatus({...status, g : 0})
+      } else if (event.id === 7){
+        setStatus({...status, h : 0})
+      } else if (event.id === 8){
+        setStatus({...status, i : 0})
+      }
+      setPoints(points=> points + 1)
+    } 
 
-    </button>
-  }
-
-  function boxPress(){
-    console.log(id)
   }
 
   return (
@@ -124,37 +184,25 @@ function Board() {
       </button>
       <div style={boardStyle}>
         <div className="board-row" style={rowStyle}>
-          <Button id={1} onClick={() => boxPress()}>
-            <Square />
-          </Button>
-          <Button id={2} onClick={() => boxPress()}>
-            <Square />
-          </Button>
-          <Button id={3} onClick={() => boxPress()}>
-            <Square />
-          </Button>
+          <Square status={status.a} id={0} />
+
+          <Square status={status.b} id={1} />
+
+          <Square status={status.c} id={2} />
         </div>
         <div className="board-row" style={rowStyle}>
-          <Button id={4} onClick={() => boxPress()}>
-            <Square />
-          </Button>
-          <Button id={5} onClick={() => boxPress()}>
-            <Square />
-          </Button>
-          <Button id={6} onClick={() => boxPress()}>
-            <Square />
-          </Button>
+          <Square status={status.d} id={3} />
+
+          <Square status={status.e} id={4} />
+
+          <Square status={status.f} id={5} />
         </div>
         <div className="board-row" style={rowStyle}>
-          <Button id={7} onClick={() => boxPress()}>
-            <Square />
-          </Button>
-          <Button id={8} onClick={() => boxPress()}>
-            <Square />
-          </Button>
-          <Button id={9} onClick={() => boxPress()}>
-            <Square />
-          </Button>
+          <Square status={status.g} id={6} />
+
+          <Square status={status.h} id={7} />
+
+          <Square status={status.i} id={8} />
         </div>
       </div>
     </div>
