@@ -1,5 +1,30 @@
 import React, { useState, useEffect } from "react";
 
+/*
+Description of program:
+
+Speed Square
+Speed squares
+
+Create a game where you have to click on the squares as many active squares as possible in 10 seconds. Use React and no other libraries.
+
+How the game works
+
+- Click on Start to start the game.
+- every second a new square set of squares will be active (green) at random. (50% chance)
+- clicking on an active square will increase your score by 1 and make the square inactive (grey)
+- every second the time left will decrease by 1
+- when the time is up the game is over and you can click on Start to start a new game
+- the score is reset to 0 when you start a new game
+- it will say "Game Over" when the game is over and if you click on Start it will start a new game
+- if you click on start when the game is not over it do nothing
+
+Note: This assessment does not have a score at the end, it is pass or fail. If you do not pass unless the application works as described above.
+
+Gif is slowed down to make it easier to see
+*/
+
+
 const rowStyle = {
   display: "flex",
 };
